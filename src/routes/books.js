@@ -10,11 +10,14 @@ const {
 const {
   validateRequest,
 } = require("../middlewares/validate-request.middleware");
-
+const { requireAuth } = require("../middlewares/require-auth");
+const { currentUser } = require("../middlewares/current-user");
 router.post(
   CREATE_BOOK.URL,
   CREATE_BOOK.VALIDATIONS,
   validateRequest,
+  // currentUser,
+  // requireAuth,
   CREATE_BOOK.handler
 );
 router.get(
@@ -33,18 +36,24 @@ router.put(
   UPDATE_ONE_BOOK.URL,
   UPDATE_ONE_BOOK.VALIDATIONS,
   validateRequest,
+  currentUser,
+  requireAuth,
   UPDATE_ONE_BOOK.handler
 );
 router.patch(
   UPDATE_ONE_BOOK.URL,
   UPDATE_ONE_BOOK.VALIDATIONS,
   validateRequest,
+  currentUser,
+  requireAuth,
   UPDATE_ONE_BOOK.handler
 );
 router.delete(
   DELETE_BOOK.URL,
   DELETE_BOOK.VALIDATIONS,
   validateRequest,
+  currentUser,
+  requireAuth,
   DELETE_BOOK.handler
 );
 module.exports = router;

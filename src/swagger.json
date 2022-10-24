@@ -1,0 +1,94 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Library management APIs Doc",
+        "description": "Library management api documentation",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:3000",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Books",
+            "description": "API for books in the system"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/book": {
+            "post": {
+                "tags": [
+                    "Books"
+                ],
+                "description": "Create new book in system",
+                "parameters": [
+                    {
+                        "name": "book",
+                        "in": "body",
+                        "description": "book that we want to create",
+                        "schema": {
+                            "$ref": "#/definitions/Book"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "New book is created",
+                        "schema": {
+                            "$ref": "#/definitions/Book"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Get all books in system",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Book"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Book": {
+            "required": [
+                "name",
+                "description"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            }
+        },
+        "Books": {
+            "required": [],
+            "properties": {}
+        }
+    }
+}
