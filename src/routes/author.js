@@ -16,8 +16,8 @@ router.post(
   CREATE_AUTHOR.URL,
   CREATE_AUTHOR.VALIDATIONS,
   validateRequest,
-  // currentUser,
-  // requireAuth,
+  currentUser,
+  requireAuth,
   CREATE_AUTHOR.handler
 );
 router.get(

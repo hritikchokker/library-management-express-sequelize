@@ -29,4 +29,13 @@ db.book.belongsTo(db.author, {
   foreignKey: "authorId",
   as: "author",
 });
+
+db.user.hasMany(db.session, {
+  as: "sessions",
+});
+
+db.session.belongsTo(db.user, {
+  foreignKey: "userId",
+  as: "user",
+});
 module.exports = { db };

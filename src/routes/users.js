@@ -1,9 +1,17 @@
-var express = require('express');
-var router = express.Router();
-
+const express = require("express");
+const router = express.Router();
+const { REGISTER_USER, LOGIN } = require("../controllers/user");
+const {
+  validateRequest,
+} = require("../middlewares/validate-request.middleware");
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.post(
+  REGISTER_USER.URL,
+  REGISTER_USER.VALIDATIONS,
+  validateRequest,
+  REGISTER_USER.handler
+);
+
+router.post(LOGIN.URL, LOGIN.VALIDATIONS, validateRequest, LOGIN.handler);
 
 module.exports = router;

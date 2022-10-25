@@ -1,19 +1,35 @@
 module.exports = (sequelize, Sequelize) => {
-  const User = sequelize.define("user", {
-    name: {
-      type: Sequelize.STRING,
+  const User = sequelize.define(
+    "user",
+    {
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      id: {
+        type: Sequelize.UUID,
+        primaryKey: true,
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        // set(value) {
+        //   this.setDataValue("password", toHash(value));
+        // },
+        // get(value){
+
+        // }
+      },
     },
-    email: {
-      type: Sequelize.STRING,
-    },
-    id: {
-      type: Sequelize.UUID,
-      primaryKey: true,
-    },
-    password: {
-      type: Sequelize.STRING,
-    //   notNull: true,
-    },
-  });
+    {
+      defaultScope: {
+        attributes: { exclude: ["password"] },
+      },
+    }
+  );
   return User;
 };
