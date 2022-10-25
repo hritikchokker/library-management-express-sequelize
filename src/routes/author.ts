@@ -1,17 +1,9 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const {
-  CREATE_AUTHOR,
-  DELETE_AUTHOR,
-  GET_ALL_AUTHORS,
-  GET_ONE_AUTHOR,
-  UPDATE_ONE_AUTHOR,
-} = require("../controllers/author");
-const {
-  validateRequest,
-} = require("../middlewares/validate-request.middleware");
-const { requireAuth } = require("../middlewares/require-auth");
-const { currentUser } = require("../middlewares/current-user");
+import { CREATE_AUTHOR, DELETE_AUTHOR, GET_ALL_AUTHORS, GET_ONE_AUTHOR, UPDATE_ONE_AUTHOR } from "../controllers/author";
+import { validateRequest } from "../middlewares/validate-request.middleware";
+import { requireAuth } from "../middlewares/require-auth";
+import { currentUser } from "../middlewares/current-user";
 router.post(
   CREATE_AUTHOR.URL,
   CREATE_AUTHOR.VALIDATIONS,
@@ -56,4 +48,4 @@ router.delete(
   requireAuth,
   DELETE_AUTHOR.handler
 );
-module.exports = router;
+export default router;

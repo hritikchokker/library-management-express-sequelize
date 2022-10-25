@@ -1,5 +1,5 @@
-const { NotFoundError } = require("../errors/not-found-error");
-exports.requireAuth = (req, res, next) => {
+import { NotFoundError } from "../errors/not-found-error";
+export const requireAuth = (req, res, next) => {
   if (!req.currentUser) {
     next(
       new NotFoundError({

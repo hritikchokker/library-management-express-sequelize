@@ -1,13 +1,13 @@
-const createError = require("http-errors");
-const express = require("express");
-const path = require("path");
-const cookieParser = require("cookie-parser");
-const logger = require("morgan");
+import createError from "http-errors";
+import express from "express";
+import path from "path";
+import cookieParser from "cookie-parser";
+import logger from "morgan";
 const app = express();
-const swagger = require("swagger-ui-express");
-const swaggerDoc = require("./swagger.json");
-const router = require("./routes");
-const { errorHandler } = require("./middlewares/error-handler");
+import swagger from "swagger-ui-express";
+import swaggerDoc from "./swagger.json";
+import router from "./routes";
+import { errorHandler } from "./middlewares/error-handler";
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
@@ -36,4 +36,4 @@ app.use(errorHandler);
 //   res.render("error");
 // });
 
-module.exports = app;
+export = app;

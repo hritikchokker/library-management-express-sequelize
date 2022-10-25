@@ -1,4 +1,5 @@
-module.exports = (sequelize, Sequelize) => {
+// @ts-ignore
+export const Books =(sequelize,Sequelize)=>{
   const Books = sequelize.define("book", {
     name: {
       type: Sequelize.STRING,
@@ -12,4 +13,4 @@ module.exports = (sequelize, Sequelize) => {
     },
   });
   return Books;
-};
+}

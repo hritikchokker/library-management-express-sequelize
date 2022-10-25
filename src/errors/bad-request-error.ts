@@ -1,6 +1,6 @@
-class BadRequestError extends Error {
+export class BadRequestError extends Error {
   statusCode = 400;
-  constructor(errorObj) {
+  constructor(errorObj: any) {
     super(errorObj);
     this.message = errorObj.message;
     this.statusCode = errorObj.statusCode;
@@ -11,4 +11,3 @@ class BadRequestError extends Error {
   }
 }
 
-exports.BadRequestError = BadRequestError;

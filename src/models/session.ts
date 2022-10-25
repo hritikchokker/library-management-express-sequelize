@@ -1,4 +1,6 @@
-module.exports = (sequelize, Sequelize) => {
+import { Sequelize } from "sequelize";
+
+export const Session = (sequelize: any, Sequelize: any) => {
   const Session = sequelize.define("session", {
     isActive: {
       type: Sequelize.BOOLEAN,
@@ -10,4 +12,4 @@ module.exports = (sequelize, Sequelize) => {
     },
   });
   return Session;
-};
+}

@@ -1,18 +1,18 @@
-const { body } = require("express-validator");
-const { Op } = require("sequelize");
-const { randomUUID } = require("crypto");
-const { db } = require("../models");
+import { body } from "express-validator";
+import { Op } from "sequelize";
+import { randomUUID } from "crypto";
+import { db } from "../models";
 const Book = db.book;
 const Author = db.author;
-const { BadRequestError } = require("../errors/bad-request-error");
-exports.CREATE_AUTHOR = {
+import { BadRequestError } from "../errors/bad-request-error";
+export const CREATE_AUTHOR = {
   URL: "/",
   METHOD: "POST",
   VALIDATIONS: [body("name").notEmpty(), body("description").notEmpty()],
   handler: async (req, res, next) => {
     try {
       const { name, description } = req.body;
-
+      // @ts-ignore
       const previousAuthor = await Author.findOne({
         where: {
           [Op.or]: {
@@ -29,6 +29,7 @@ exports.CREATE_AUTHOR = {
           })
         );
       }
+      // @ts-ignore
       const authorDetails = Author.build({
         id: randomUUID(),
         name,
@@ -39,16 +40,17 @@ exports.CREATE_AUTHOR = {
         message: "author created success",
         details: authorDetails,
       });
-    } catch (error) {}
+    } catch (error) { }
   },
 };
 
-exports.GET_ALL_AUTHORS = {
+export const GET_ALL_AUTHORS = {
   URL: "/",
   METHOD: "GET",
   VALIDATIONS: [],
   handler: async (req, res) => {
     try {
+      // @ts-ignore
       const authorList = await Author.findAll({
         include: ['books'],
       });
@@ -57,7 +59,7 @@ exports.GET_ALL_AUTHORS = {
         data: authorList,
       });
     } catch (error) {
-        console.log(error)
+      console.log(error)
       return res.status(400).json({
         error,
       });
@@ -65,12 +67,13 @@ exports.GET_ALL_AUTHORS = {
   },
 };
 
-exports.GET_ONE_AUTHOR = {
+export const GET_ONE_AUTHOR = {
   URL: "/:id",
   METHOD: "GET",
   VALIDATIONS: [],
   handler: async (req, res) => {
     try {
+      // @ts-ignore
       const authorDetails = await Author.findOne({
         where: { id: req.params.id },
       });
@@ -86,16 +89,16 @@ exports.GET_ONE_AUTHOR = {
   },
 };
 
-exports.UPDATE_ONE_AUTHOR = {
+export const UPDATE_ONE_AUTHOR = {
   URL: "/:id",
   METHOD: "PATCH",
   VALIDATIONS: [body("name").notEmpty(), body("description").notEmpty()],
-  handler: async (req, res) => {},
+  handler: async (req, res) => { },
 };
 
-exports.DELETE_AUTHOR = {
+export const DELETE_AUTHOR = {
   URL: "/:id",
   METHOD: "DELETE",
   VALIDATIONS: [],
-  handler: async (req, res) => {},
+  handler: async (req, res) => { },
 };

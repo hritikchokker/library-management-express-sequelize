@@ -1,8 +1,6 @@
 const { validationResult } = require("express-validator");
-const {
-  RequestValidationError,
-} = require("../errors/request-validation-errors");
-exports.validateRequest = (req, res, next) => {
+import { RequestValidationError } from "../errors/request-validation-errors";
+export const validateRequest = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(

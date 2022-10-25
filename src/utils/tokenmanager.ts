@@ -1,11 +1,11 @@
 const jwt = require("jsonwebtoken");
 const env = require("../config/env");
 
-exports.decode = (str = "") => {
+export const decode = (str = "") => {
   return jwt.verify(str, env.JWT_SECRET);
 };
 
-exports.createToken = (content) => {
+export const createToken = (content: string | unknown) => {
   if (typeof content === "string") {
     return jwt.sign(content, env.JWT_SECRET);
   }

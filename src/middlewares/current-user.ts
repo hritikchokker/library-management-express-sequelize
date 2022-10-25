@@ -1,6 +1,6 @@
-const { decode } = require("../utils/tokenmanager");
-const { BadRequestError } = require("../errors/bad-request-error");
-exports.currentUser = (req, res, next) => {
+import { decode } from "../utils/tokenmanager";
+import { BadRequestError } from "../errors/bad-request-error";
+export const currentUser = (req, res, next) => {
   try {
     if (!req.headers.authorization) {
       return next(

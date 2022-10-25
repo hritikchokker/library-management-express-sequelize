@@ -1,4 +1,5 @@
-module.exports = (sequelize, Sequelize) => {
+// @ts-ignore
+export const User = (sequelize, Sequelize) => {
   const User = sequelize.define("user", {
     name: {
       type: Sequelize.STRING,
@@ -12,8 +13,8 @@ module.exports = (sequelize, Sequelize) => {
     },
     password: {
       type: Sequelize.STRING,
-    //   notNull: true,
+      //   notNull: true,
     },
   });
   return User;
-};
+}

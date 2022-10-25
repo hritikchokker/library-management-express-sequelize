@@ -1,6 +1,6 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const { NotFoundError } = require("../errors/not-found-error");
+import { NotFoundError } from "../errors/not-found-error";
 router.all("*", (req, res, next) => {
   next(
     new NotFoundError({
@@ -10,4 +10,4 @@ router.all("*", (req, res, next) => {
   );
 });
 
-module.exports = router;
+export default router;

@@ -1,6 +1,7 @@
-class RequestValidationError extends Error {
+export class RequestValidationError extends Error {
   statusCode = 400;
-  constructor(errorObj) {
+  errors: any;
+  constructor(errorObj: any) {
     super(errorObj);
     this.message = errorObj.message;
     this.statusCode = errorObj.statusCode;
@@ -17,5 +18,3 @@ class RequestValidationError extends Error {
     ];
   }
 }
-
-exports.RequestValidationError = RequestValidationError;

@@ -1,6 +1,6 @@
-class NotFoundError extends Error {
+export class NotFoundError extends Error {
   statusCode = 400;
-  constructor(errorObj) {
+  constructor(errorObj: any) {
     super(errorObj);
     this.message = errorObj.message;
     this.statusCode = errorObj.statusCode;
@@ -10,5 +10,3 @@ class NotFoundError extends Error {
     return [{ message: this.message, statusCode: this.statusCode }];
   }
 }
-
-exports.NotFoundError = NotFoundError;

@@ -1,12 +1,12 @@
-const { body } = require("express-validator");
-const { Op } = require("sequelize");
-const { randomUUID } = require("crypto");
-const { db } = require("../models");
+import { body } from "express-validator";
+import { Op } from "sequelize";
+import { randomUUID } from "crypto";
+import { db } from "../models";
 const Book = db.book;
 const Author = db.author;
-const { BadRequestError } = require("../errors/bad-request-error");
-const { NotFoundError } = require("../errors/not-found-error");
-exports.CREATE_BOOK = {
+import { BadRequestError } from "../errors/bad-request-error";
+import { NotFoundError } from "../errors/not-found-error";
+export const CREATE_BOOK = {
   URL: "/",
   METHOD: "POST",
   VALIDATIONS: [body("name").notEmpty(), body("description").notEmpty()],
@@ -14,6 +14,7 @@ exports.CREATE_BOOK = {
     try {
       const { name, description, authorId } = req.body;
       console.log(authorId,'authorid');
+      // @ts-ignore
       const previousBook = await Book.findOne({
         where: {
           [Op.or]: {
@@ -30,6 +31,7 @@ exports.CREATE_BOOK = {
           })
         );
       }
+      // @ts-ignore
       const author = await Author.findOne({
         where: { id: authorId },
       });
@@ -42,6 +44,7 @@ exports.CREATE_BOOK = {
         );
       }
 
+      // @ts-ignore
       const bookDetails = Book.build({
         id: randomUUID(),
         name,
@@ -59,12 +62,13 @@ exports.CREATE_BOOK = {
   },
 };
 
-exports.GET_ALL_BOOKS = {
+export const GET_ALL_BOOKS = {
   URL: "/",
   METHOD: "GET",
   VALIDATIONS: [],
   handler: async (req, res) => {
     try {
+      // @ts-ignore
       const booksList = await Book.findAll();
 
       return res.status(200).json({
@@ -80,7 +84,7 @@ exports.GET_ALL_BOOKS = {
   },
 };
 
-exports.GET_ONE_BOOK = {
+export const GET_ONE_BOOK = {
   URL: "/:id",
   METHOD: "GET",
   VALIDATIONS: [],
@@ -89,10 +93,8 @@ exports.GET_ONE_BOOK = {
       if (!req.params.id) {
         throw new BadRequestError("invalid request no param found");
       }
+      // @ts-ignore
       const bookDetails = await Book.findOne({ where: { id: req.params.id } });
-      if (!bookDetails) {
-        throw new BadRequest();
-      }
       return res.status(200).json({
         message: "book fetched",
         details: bookDetails,
@@ -106,14 +108,14 @@ exports.GET_ONE_BOOK = {
   },
 };
 
-exports.UPDATE_ONE_BOOK = {
+export const UPDATE_ONE_BOOK = {
   URL: "/:id",
   METHOD: "PATCH",
   VALIDATIONS: [body("name").notEmpty(), body("description").notEmpty()],
   handler: async (req, res) => {},
 };
 
-exports.DELETE_BOOK = {
+export const DELETE_BOOK = {
   URL: "/:id",
   METHOD: "DELETE",
   VALIDATIONS: [],

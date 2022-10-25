@@ -1,4 +1,5 @@
-module.exports = (sequelize, Sequelize) => {
+// @ts-ignore
+export const Author = (sequelize, Sequelize) => {
   const Author = sequelize.define("author", {
     name: {
       type: Sequelize.STRING,
@@ -12,4 +13,4 @@ module.exports = (sequelize, Sequelize) => {
     },
   });
   return Author;
-};
+}
