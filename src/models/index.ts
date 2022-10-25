@@ -1,32 +1,32 @@
 import { environment as config } from "../config/env";
-import seql from "sequelize";
+import { Model, ModelCtor, Sequelize } from "sequelize";
 import { Session } from './session';
 import { Author } from "./author";
 import { User } from "./user";
 import { Books } from "./book";
+
 // seql.
-// @ts-ignore
-const sequelize = new seql(
+const sequelizeInstance = new Sequelize(
   config.DB_NAME,
   config.DB_USERNAME,
   config.DB_PASSWORD,
   {
     host: config.DB_HOST,
-    dialect: config.DB_DIALECT,
+    dialect: 'postgres',
   }
 );
 const db: any = {
-  sequelize,
-  Sequelize: sequelize,
+  sequelize: sequelizeInstance,
+  Sequelize,
   book: null,
   author: null,
   // session: null,
   user: null
 };
-db.book = Books(sequelize, seql);
-db.author = Author(sequelize, seql);
-db.session = Session(sequelize, seql);
-db.user = User(sequelize, seql);
+db.book = Books(sequelizeInstance, Sequelize);
+db.author = Author(sequelizeInstance, Sequelize);
+db.session = Session(sequelizeInstance, Sequelize);
+db.user = User(sequelizeInstance, Sequelize);
 
 // @ts-ignore
 db.author.hasMany(db.book, {
