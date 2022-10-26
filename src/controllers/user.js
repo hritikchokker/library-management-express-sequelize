@@ -130,7 +130,36 @@ const LOGIN = {
   },
 };
 
+const LOGOUT = {
+  URL: "/logout",
+  METHOD: "POST",
+  VALIDATIONS: [],
+  handler: async (req, res, next) => {
+    try {
+      const { sessionId } = req.currentUser;
+      if (!sessionId) {
+        return next(
+          new BadRequestError({
+            message: "invalid request user is already loggedout",
+            statusCode: 400,
+          })
+        );
+      }
+      await SessionModel.destroy({
+        where: { id: sessionId },
+      });
+      return res.status(200).json({
+        message: "logout success",
+        statusCode: 200,
+      });
+    } catch (error) {
+      console.log(error, "err");
+    }
+  },
+};
+
 module.exports = {
   REGISTER_USER,
   LOGIN,
+  LOGOUT,
 };

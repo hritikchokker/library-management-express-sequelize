@@ -1,6 +1,8 @@
 const { decode, checkForExpiry } = require("../utils/tokenmanager");
 const { BadRequestError } = require("../errors/bad-request-error");
-exports.currentUser = (req, res, next) => {
+const { db } = require("../models");
+const SessionModel = db.session;
+exports.currentUser = async (req, res, next) => {
   try {
     if (!req.headers.authorization) {
       return next(
@@ -12,6 +14,9 @@ exports.currentUser = (req, res, next) => {
     }
     const user = decode(req.headers.authorization);
     if (user.exp && checkForExpiry(user.exp)) {
+      await SessionModel.destroy({
+        where: { id: user.sessionId },
+      });
       return next(
         new BadRequestError({
           statusCode: 401,
