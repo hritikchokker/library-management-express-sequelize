@@ -8,4 +8,4 @@ run `npm run start` for development server [(http://localhost:3000)]
 
 # Swagger Document
 
-open [(http://localhost:3000/documentation)] for doc
+open [Documentation](http://localhost:3000/documentation) for doc
