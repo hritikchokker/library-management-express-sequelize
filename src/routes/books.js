@@ -16,20 +16,24 @@ router.post(
   CREATE_BOOK.URL,
   CREATE_BOOK.VALIDATIONS,
   validateRequest,
-  // currentUser,
-  // requireAuth,
+  currentUser,
+  requireAuth,
   CREATE_BOOK.handler
 );
 router.get(
   GET_ALL_BOOKS.URL,
   GET_ALL_BOOKS.VALIDATIONS,
   validateRequest,
+  currentUser,
+  requireAuth,
   GET_ALL_BOOKS.handler
 );
 router.get(
   GET_ONE_BOOK.URL,
   GET_ONE_BOOK.VALIDATIONS,
   validateRequest,
+  currentUser,
+  requireAuth,
   GET_ONE_BOOK.handler
 );
 router.put(

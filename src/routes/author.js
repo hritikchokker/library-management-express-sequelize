@@ -24,12 +24,16 @@ router.get(
   GET_ALL_AUTHORS.URL,
   GET_ALL_AUTHORS.VALIDATIONS,
   validateRequest,
+  currentUser,
+  requireAuth,
   GET_ALL_AUTHORS.handler
 );
 router.get(
   GET_ONE_AUTHOR.URL,
   GET_ONE_AUTHOR.VALIDATIONS,
   validateRequest,
+  currentUser,
+  requireAuth,
   GET_ONE_AUTHOR.handler
 );
 router.put(

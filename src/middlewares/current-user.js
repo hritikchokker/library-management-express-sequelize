@@ -12,11 +12,23 @@ exports.currentUser = async (req, res, next) => {
         })
       );
     }
+    if (req.headers.authorization.includes("Bearer")) {
+      req.headers.authorization = req.headers.authorization.split(" ")[1];
+    }
     const user = decode(req.headers.authorization);
-    if (user.exp && checkForExpiry(user.exp)) {
-      await SessionModel.destroy({
-        where: { id: user.sessionId },
-      });
+    const sessionDetails = await SessionModel.findOne({
+      where: { id: user.sessionId },
+    });
+    if (!sessionDetails) {
+      return next(
+        new BadRequestError({
+          message: "token expired, user is logged out, please login again",
+          statusCode: 401,
+        })
+      );
+    }
+    if (user.exp && checkForExpiry(sessionDetails.expiresIn)) {
+      await sessionDetails.destroy();
       return next(
         new BadRequestError({
           statusCode: 401,

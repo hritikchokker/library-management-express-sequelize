@@ -5,6 +5,7 @@ const { db } = require("../models");
 const Book = db.book;
 const Author = db.author;
 const { BadRequestError } = require("../errors/bad-request-error");
+const { NotFoundError } = require("../errors/not-found-error");
 exports.CREATE_AUTHOR = {
   URL: "/",
   METHOD: "POST",
@@ -50,14 +51,14 @@ exports.GET_ALL_AUTHORS = {
   handler: async (req, res) => {
     try {
       const authorList = await Author.findAll({
-        include: ['books'],
+        include: ["books"],
       });
       return res.status(200).json({
         message: "authors list fetched",
         data: authorList,
       });
     } catch (error) {
-        console.log(error)
+      console.log(error);
       return res.status(400).json({
         error,
       });
@@ -75,7 +76,7 @@ exports.GET_ONE_AUTHOR = {
         where: { id: req.params.id },
       });
       return res.status(200).json({
-        message: "book fetched",
+        message: "author details fetched",
         details: authorDetails,
       });
     } catch (error) {
@@ -97,5 +98,33 @@ exports.DELETE_AUTHOR = {
   URL: "/:id",
   METHOD: "DELETE",
   VALIDATIONS: [],
-  handler: async (req, res) => {},
+  handler: async (req, res) => {
+    try {
+      if (!req.params.id) {
+        return next(
+          new BadRequestError({
+            message: "bad request, no author id passed to the request",
+            statusCode: 400,
+          })
+        );
+      }
+      const authorDetails = await Author.findOne({
+        where: { id: req.params.id },
+      });
+
+      if (!authorDetails) {
+        return next(
+          new NotFoundError({
+            message: "no author found with this id",
+            statusCode: 400,
+          })
+        );
+      }
+      await authorDetails.destroy();
+      return res.status(200).json({
+        message: "author deleted successfully",
+        statusCode: 200,
+      });
+    } catch (error) {}
+  },
 };

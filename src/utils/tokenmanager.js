@@ -6,7 +6,7 @@ exports.decode = (str = "") => {
 };
 
 exports.checkForExpiry = (exp) => {
-  return Date.now() >= exp * 1000;
+  return Date.now() >= new Date(exp).toISOString();
 };
 
 exports.createToken = (content, otherConfig = { expiresIn: "1h" }) => {

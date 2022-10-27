@@ -102,7 +102,7 @@ const LOGIN = {
           include: [UserModel],
         }
       );
-      if (session && !env.SUPPORT_MULTI_LOGIN) {
+      if (session) {
         // await session.destroy();
         return next(
           new BadRequestError({
