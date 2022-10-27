@@ -1,5 +1,6 @@
 const { body } = require("express-validator");
 const { randomUUID } = require("crypto");
+const { Op } = require("sequelize");
 const { BadRequestError } = require("../errors/bad-request-error");
 const {
   RequestValidationError,
@@ -7,6 +8,8 @@ const {
 const { db } = require("../models");
 const { toHash, compare } = require("../utils/hashmanager");
 const { createToken } = require("../utils/tokenmanager");
+const { fetchDateFromString } = require("../utils/common");
+const env = require("../config/env");
 const UserModel = db.user;
 const SessionModel = db.session;
 const REGISTER_USER = {
@@ -19,7 +22,6 @@ const REGISTER_USER = {
   ],
   handler: async (req, res, next) => {
     try {
-      console.log("reached here");
       const { name, email, password } = req.body;
       const existedUser = await UserModel.findOne({
         where: {
@@ -47,6 +49,7 @@ const REGISTER_USER = {
         id: randomUUID(),
         userId: user.id,
         isActive: true,
+        expiresIn: fetchDateFromString("m", 4),
       });
       await session.save();
       const token = createToken(
@@ -54,7 +57,7 @@ const REGISTER_USER = {
           sessionId: session.id,
           userId: session.userId,
         },
-        { expiresIn: "2m" }
+        { expiresIn: "4m" }
       );
       return res.status(201).json({
         session,
@@ -88,13 +91,19 @@ const LOGIN = {
       }
       const session = await SessionModel.findOne(
         {
-          where: { userId: userDetails.id },
+          where: {
+            userId: userDetails.id,
+            expiresIn: {
+              [Op.gte]: Date.now(),
+            },
+          },
         },
         {
           include: [UserModel],
         }
       );
-      if (session) {
+      if (session && !env.SUPPORT_MULTI_LOGIN) {
+        // await session.destroy();
         return next(
           new BadRequestError({
             message: "user already loggedIn",
@@ -114,11 +123,12 @@ const LOGIN = {
         id: randomUUID(),
         isActive: true,
         userId: userDetails.id,
+        expiresIn: fetchDateFromString("m", 4),
       });
       await newSession.save();
       const token = createToken(
         { userId: userDetails.id, sessionId: newSession.id },
-        { expiresIn: "2m" }
+        { expiresIn: "4m" }
       );
       return res.status(200).json({
         message: "login success",
@@ -136,7 +146,7 @@ const LOGOUT = {
   VALIDATIONS: [],
   handler: async (req, res, next) => {
     try {
-      const { sessionId } = req.currentUser;
+      const { sessionId, userId } = req.currentUser;
       if (!sessionId) {
         return next(
           new BadRequestError({
@@ -146,7 +156,7 @@ const LOGOUT = {
         );
       }
       await SessionModel.destroy({
-        where: { id: sessionId },
+        where: { id: sessionId, userId },
       });
       return res.status(200).json({
         message: "logout success",

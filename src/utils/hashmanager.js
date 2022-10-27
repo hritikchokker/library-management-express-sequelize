@@ -9,6 +9,7 @@ const toHash = async (password) => {
 };
 
 const compare = async (storedPassword, suppliedPassword) => {
+  console.log(storedPassword,'storedpass');
   const [hash, salt] = storedPassword.split(".");
   const buf = await scryptAsync(suppliedPassword, salt, 64);
   return buf.toString("hex") === hash;

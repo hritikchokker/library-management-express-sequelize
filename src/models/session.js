@@ -8,6 +8,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.UUID,
       primaryKey: true,
     },
+    expiresIn: {
+      type: Sequelize.DOUBLE,
+      allowNull: false,
+    },
   });
   return Session;
 };

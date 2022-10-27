@@ -25,11 +25,11 @@ module.exports = (sequelize, Sequelize) => {
         // }
       },
     },
-    {
-      defaultScope: {
-        attributes: { exclude: ["password"] },
-      },
-    }
+    // {
+    //   defaultScope: {
+    //     attributes: { exclude: ["password"] },
+    //   },
+    // }
   );
   return User;
 };
