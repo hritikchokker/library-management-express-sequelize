@@ -19,6 +19,7 @@ db.book = require("./book")(sequelize, seql);
 db.author = require("./author")(sequelize, seql);
 db.session = require("./session")(sequelize, seql);
 db.user = require("./user")(sequelize, seql);
+db.admin = require("./admin")(sequelize, seql);
 
 db.author.hasMany(db.book, {
   as: "books",
